@@ -15,15 +15,13 @@ defmodule MarsRoverTest do
 	  end
 
 	  test "turns right", context do
-  		right = -90
-			{:ok, rover } = MarsRover.turn(context[:rover], right)
-			assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
+			{:ok, rover } = MarsRover.turn(context[:rover], "R")
+			assert rover == %Rover{ x: 0, y: 0, orientation: "E" }
 	  end
 
 	  test "turns left", context do
-  		left = 90
-			{:ok, rover } = MarsRover.turn(context[:rover], left)
-			assert rover == %Rover{ x: 0, y: 0, orientation: "E" }
+			{:ok, rover } = MarsRover.turn(context[:rover], "L")
+			assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
 	  end
 
 	  test "moves forward", context do

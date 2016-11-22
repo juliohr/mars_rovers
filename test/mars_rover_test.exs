@@ -2,9 +2,18 @@ defmodule MarsRoverTest do
   use ExUnit.Case
   doctest MarsRover
 
+  test "rover cannot move outside boundaries" do
+    initial_position = %{x: 0, y: 0, orientation: "N"}
+    boundaries = %Plateau{x: 2, y: 2}
+    {:ok, rover } = MarsRover.create(initial_position, boundaries)
+    { :error, rover } = MarsRover.move(rover)
+    assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
+  end
+
   describe "rover oriented towards north" do
     setup do
       initial_position = %{x: 0, y: 0, orientation: "N"}
+      boundaries = %Plateau{x: 2, y: 2}
       {:ok, rover } = MarsRover.create(initial_position)
       [rover: rover]
     end

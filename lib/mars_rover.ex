@@ -14,8 +14,8 @@ defmodule MarsRover do
     case {current_position.orientation, rotation } do
       {"N", "L"} -> Agent.update(rover, fn rover -> %{rover | orientation: "W" } end) 
       {"N", "R"} -> Agent.update(rover, fn rover -> %{rover | orientation: "E" } end) 
-      {"E", "L"} -> Agent.update(rover, fn rover -> %{rover | orientation: "S" } end) 
-      {"E", "R"} -> Agent.update(rover, fn rover -> %{rover | orientation: "N" } end) 
+      {"E", "L"} -> Agent.update(rover, fn rover -> %{rover | orientation: "N" } end) 
+      {"E", "R"} -> Agent.update(rover, fn rover -> %{rover | orientation: "S" } end) 
       {"S", "L"} -> Agent.update(rover, fn rover -> %{rover | orientation: "E" } end) 
       {"S", "R"} -> Agent.update(rover, fn rover -> %{rover | orientation: "W" } end) 
       {"W", "L"} -> Agent.update(rover, fn rover -> %{rover | orientation: "S" } end) 
@@ -28,9 +28,9 @@ defmodule MarsRover do
     current_position = current_position(rover)
     case current_position.orientation do
       "N" -> Agent.update(rover, fn rover -> %{rover | y: (rover.y + 1) } end) 
-      "E" -> Agent.update(rover, fn rover -> %{rover | y: (rover.x + 1) } end) 
+      "E" -> Agent.update(rover, fn rover -> %{rover | x: (rover.x + 1) } end) 
       "S" -> Agent.update(rover, fn rover -> %{rover | y: (rover.y - 1) } end) 
-      "W" -> Agent.update(rover, fn rover -> %{rover | y: (rover.x - 1) } end) 
+      "W" -> Agent.update(rover, fn rover -> %{rover | x: (rover.x - 1) } end) 
     end
     {:ok, Agent.get(rover, fn rover -> rover end)}
   end

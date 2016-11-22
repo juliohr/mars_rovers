@@ -44,16 +44,17 @@ defmodule MarsRoverTest do
     initial_position = %{x: 0, y: 2, orientation: "N"}
     {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
     {:ok, rover } = MarsRover.create(initial_position, Plateau.boundaries(plateau))
-    { :error, rover } = MarsRover.move(rover, Plateau.boundaries(plateau))
-    assert rover == %MarsRover{ x: 0, y: 0, orientation: "W" }
+    assert { :error, msg } = MarsRover.move(rover, Plateau.boundaries(plateau))
+    assert msg == "Cannot move outside boundaries"
   end
 
   describe "rover oriented towards north" do
     setup do
       initial_position = %{x: 0, y: 0, orientation: "N"}
-      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
+      boundaries = Plateau.boundaries(plateau)
       {:ok, rover } = MarsRover.create(initial_position, boundaries)
-      [rover: rover]
+      [rover: rover, boundaries: boundaries]
     end
 
     test "knows its current position", context do
@@ -71,7 +72,7 @@ defmodule MarsRoverTest do
     end
 
     test "moves forward", context do
-      {:ok, rover } = MarsRover.move(context[:rover])
+      {:ok, rover } = MarsRover.move(context[:rover], context[:boundaries])
       assert rover == %MarsRover{ x: 0, y: 1, orientation: "N" }
     end
   end
@@ -79,9 +80,10 @@ defmodule MarsRoverTest do
   describe "rover oriented towards east" do
     setup do
       initial_position = %{x: 0, y: 0, orientation: "E"}
-      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
+      boundaries = Plateau.boundaries(plateau)
       {:ok, rover } = MarsRover.create(initial_position, boundaries)
-      [rover: rover]
+      [rover: rover, boundaries: boundaries]
     end
 
     test "turns right", context do
@@ -95,7 +97,7 @@ defmodule MarsRoverTest do
     end
 
     test "moves forward", context do
-      {:ok, rover } = MarsRover.move(context[:rover])
+      {:ok, rover } = MarsRover.move(context[:rover], context[:boundaries])
       assert rover == %MarsRover{ x: 1, y: 0, orientation: "E" }
     end
   end
@@ -103,9 +105,10 @@ defmodule MarsRoverTest do
   describe "rover oriented towards south" do
     setup do
       initial_position = %{x: 0, y: 1, orientation: "S"}
-      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
+      boundaries = Plateau.boundaries(plateau)
       {:ok, rover } = MarsRover.create(initial_position, boundaries)
-      [rover: rover]
+      [rover: rover, boundaries: boundaries]
     end
 
     test "turns right", context do
@@ -119,7 +122,7 @@ defmodule MarsRoverTest do
     end
 
     test "moves forward", context do
-      {:ok, rover } = MarsRover.move(context[:rover])
+      {:ok, rover } = MarsRover.move(context[:rover], context[:boundaries])
       assert rover == %MarsRover{ x: 0, y: 0, orientation: "S" }
     end
   end
@@ -127,9 +130,10 @@ defmodule MarsRoverTest do
   describe "rover oriented towards W" do
     setup do
       initial_position = %{x: 1, y: 0, orientation: "W"}
-      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
+      boundaries = Plateau.boundaries(plateau)
       {:ok, rover } = MarsRover.create(initial_position, boundaries)
-      [rover: rover]
+      [rover: rover, boundaries: boundaries]
     end
 
     test "turns right", context do
@@ -143,7 +147,7 @@ defmodule MarsRoverTest do
     end
 
     test "moves forward", context do
-      {:ok, rover } = MarsRover.move(context[:rover])
+      {:ok, rover } = MarsRover.move(context[:rover], context[:boundaries])
       assert rover == %MarsRover{ x: 0, y: 0, orientation: "W" }
     end
   end

@@ -33,14 +33,37 @@ defmodule MarsRover do
     {:ok, Agent.get(rover, fn rover -> rover end)}
   end
 
-  def move(rover) do
-    current_position = current_position(rover)
-    case current_position.orientation do
-      "N" -> Agent.update(rover, fn rover -> %{rover | y: (rover.y + 1) } end) 
-      "E" -> Agent.update(rover, fn rover -> %{rover | x: (rover.x + 1) } end) 
-      "S" -> Agent.update(rover, fn rover -> %{rover | y: (rover.y - 1) } end) 
-      "W" -> Agent.update(rover, fn rover -> %{rover | x: (rover.x - 1) } end) 
+  def move(rover, boundaries) do
+    rover_position = current_position(rover)
+    case rover_position.orientation do
+      "N" -> 
+        unless rover_position.y == boundaries.y do
+          Agent.update(rover, fn rover -> %{rover | y: (rover.y + 1) } end)
+          {:ok, Agent.get(rover, fn rover -> rover end)}
+        else
+          {:error, "Cannot move outside boundaries"}
+        end
+      "E" ->
+        unless rover_position.x == boundaries.x do
+          Agent.update(rover, fn rover -> %{rover | x: (rover.x + 1) } end) 
+          {:ok, Agent.get(rover, fn rover -> rover end)}
+        else
+          {:error, "Cannot move outside boundaries"}
+        end
+      "S" ->
+        unless rover_position.y == 0 do
+          Agent.update(rover, fn rover -> %{rover | y: (rover.y - 1) } end) 
+          {:ok, Agent.get(rover, fn rover -> rover end)}
+        else
+          {:error, "Cannot move outside boundaries"}
+        end
+      "W" -> 
+        unless rover_position.x == 0 do
+          Agent.update(rover, fn rover -> %{rover | x: (rover.x - 1) } end) 
+          {:ok, Agent.get(rover, fn rover -> rover end)}
+        else
+          {:error, "Cannot move outside boundaries"}
+        end
     end
-    {:ok, Agent.get(rover, fn rover -> rover end)}
   end
 end

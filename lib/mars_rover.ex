@@ -1,5 +1,4 @@
 defmodule MarsRover do
-
   def create(rover) do
     { :ok, rover } = Agent.start_link(fn -> %Rover{ x: rover.x, y: rover.y, orientation: rover.orientation} end)
   end
@@ -23,5 +22,16 @@ defmodule MarsRover do
       {"W", "R"} -> Agent.update(rover, fn rover -> %{rover | orientation: "N" } end) 
     end
     {:ok, Agent.get(rover, fn rover -> rover end)}
-  end 
+  end
+
+  def move(rover) do
+    current_position = current_position(rover)
+    case current_position.orientation do
+      "N" -> Agent.update(rover, fn rover -> %{rover | y: (rover.y + 1) } end) 
+      "E" -> Agent.update(rover, fn rover -> %{rover | y: (rover.x + 1) } end) 
+      "S" -> Agent.update(rover, fn rover -> %{rover | y: (rover.y - 1) } end) 
+      "W" -> Agent.update(rover, fn rover -> %{rover | y: (rover.x - 1) } end) 
+    end
+    {:ok, Agent.get(rover, fn rover -> rover end)}
+  end
 end

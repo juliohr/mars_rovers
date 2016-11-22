@@ -4,7 +4,8 @@ defmodule MarsRoverParserTest do
 
   setup do
       initial_position = %{x: 0, y: 0, orientation: "N"}
-      {:ok, rover } = MarsRover.create(initial_position)
+      {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
+      {:ok, rover } = MarsRover.create(initial_position, Plateau.boundaries(plateau))
       [rover: rover]
   end
 

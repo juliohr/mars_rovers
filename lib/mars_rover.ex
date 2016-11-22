@@ -1,6 +1,13 @@
 defmodule MarsRover do
-  def create(rover) do
-    Agent.start_link(fn -> %Rover{ x: rover.x, y: rover.y, orientation: rover.orientation} end)
+  def create(rover, plateau) do
+    cond do
+      rover.x < 0 ||rover.x > plateau.x ->
+        {:error, "Rover's x position is outside plateau's boundaries" }
+      rover.y < 0 || rover.y > plateau.y ->
+        {:error, "Rover's y position is outside plateau's boundaries" }
+      true ->
+        Agent.start_link(fn -> %Rover{ x: rover.x, y: rover.y, orientation: rover.orientation} end)
+    end
   end
 
   def current_position(rover) do

@@ -3,9 +3,13 @@ defmodule MarsRoversProblem do
     IO.puts "Reading input file"
     { :ok, body } = File.read("input.txt")
 
+    IO.puts "Creating Plateau"
+    {:ok, plateau} = Plateau.create(parse_plateau_boundaries(body,0))
+    boundaries = Plateau.boundaries(plateau)
+
     IO.puts "Creating rovers"
-    {:ok, rover1 } = MarsRover.create(parse_initial_position(body, 1))
-    {:ok, rover2 } = MarsRover.create(parse_initial_position(body, 3))
+    {:ok, rover1 } = MarsRover.create(parse_initial_position(body, 1), boundaries)
+    {:ok, rover2 } = MarsRover.create(parse_initial_position(body, 3), boundaries)
 
     IO.puts "Executing instructions for rover 1"
     command_rover1 = generate_command_rover_fn(rover1)
@@ -26,6 +30,12 @@ defmodule MarsRoversProblem do
     split_lines = String.split(body, "\n")
     input_list = String.split(Enum.at(split_lines,line), " ")
     %{ x: String.to_integer(Enum.at(input_list, 0)), y: String.to_integer(Enum.at(input_list, 1)), orientation: Enum.at(input_list, 2) }
+  end
+
+  defp parse_plateau_boundaries(body, line) do
+    split_lines = String.split(body, "\n")
+    input_list = String.split(Enum.at(split_lines,line), " ")
+    %{ x: String.to_integer(Enum.at(input_list, 0)), y: String.to_integer(Enum.at(input_list, 1))}
   end
 
   """

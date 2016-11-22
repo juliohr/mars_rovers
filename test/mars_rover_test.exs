@@ -2,11 +2,49 @@ defmodule MarsRoverTest do
   use ExUnit.Case
   doctest MarsRover
 
+  describe "rover creation" do
+    test "creates rover successfuly with valid attributes" do
+      initial_position = %{x: 0, y: 0, orientation: "N"}
+      boundaries = %Plateau{x: 2, y: 2}
+      assert {:ok, rover } = MarsRover.create(initial_position, boundaries)  
+    end
+
+    test "cannot create rover with negative position on x" do
+      initial_position = %{x: -1, y: 0, orientation: "N"}
+      boundaries = %Plateau{x: 2, y: 2}
+      assert {:error, msg } = MarsRover.create(initial_position, boundaries)
+      assert msg == "Rover's x position is outside plateau's boundaries"
+    end
+
+    test "cannot create rover with negative position on y" do
+      initial_position = %{x: 0, y: -1, orientation: "N"}
+      boundaries = %Plateau{x: 2, y: 2}
+      assert {:error, msg } = MarsRover.create(initial_position, boundaries)
+      assert msg == "Rover's y position is outside plateau's boundaries"
+    end
+
+    test "cannot create rover outside plateau's x boundaries" do
+      initial_position = %{x: 4, y: 0, orientation: "N"}
+      boundaries = %Plateau{x: 2, y: 2}
+      {:error, rover } = MarsRover.create(initial_position, boundaries)
+      assert {:error, msg } = MarsRover.create(initial_position, boundaries)
+      assert msg == "Rover's x position is outside plateau's boundaries"
+    end
+
+    test "cannot create rover outside plateau's y boundaries" do
+      initial_position = %{x: 0, y: 3, orientation: "N"}
+      boundaries = %Plateau{x: 2, y: 2}
+      {:error, rover } = MarsRover.create(initial_position, boundaries)
+      assert {:error, msg } = MarsRover.create(initial_position, boundaries)
+      assert msg == "Rover's y position is outside plateau's boundaries"
+    end
+  end
+
   test "rover cannot move outside boundaries" do
-    initial_position = %{x: 0, y: 0, orientation: "N"}
-    boundaries = %Plateau{x: 2, y: 2}
-    {:ok, rover } = MarsRover.create(initial_position, boundaries)
-    { :error, rover } = MarsRover.move(rover)
+    initial_position = %{x: 0, y: 2, orientation: "N"}
+    {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
+    {:ok, rover } = MarsRover.create(initial_position, Plateau.boundaries(plateau))
+    { :error, rover } = MarsRover.move(rover, Plateau.boundaries(plateau))
     assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
   end
 
@@ -14,7 +52,7 @@ defmodule MarsRoverTest do
     setup do
       initial_position = %{x: 0, y: 0, orientation: "N"}
       boundaries = %Plateau{x: 2, y: 2}
-      {:ok, rover } = MarsRover.create(initial_position)
+      {:ok, rover } = MarsRover.create(initial_position, boundaries)
       [rover: rover]
     end
 
@@ -41,7 +79,8 @@ defmodule MarsRoverTest do
   describe "rover oriented towards east" do
     setup do
       initial_position = %{x: 0, y: 0, orientation: "E"}
-      {:ok, rover } = MarsRover.create(initial_position)
+      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, rover } = MarsRover.create(initial_position, boundaries)
       [rover: rover]
     end
 
@@ -64,7 +103,8 @@ defmodule MarsRoverTest do
   describe "rover oriented towards south" do
     setup do
       initial_position = %{x: 0, y: 1, orientation: "S"}
-      {:ok, rover } = MarsRover.create(initial_position)
+      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, rover } = MarsRover.create(initial_position, boundaries)
       [rover: rover]
     end
 
@@ -87,7 +127,8 @@ defmodule MarsRoverTest do
   describe "rover oriented towards W" do
     setup do
       initial_position = %{x: 1, y: 0, orientation: "W"}
-      {:ok, rover } = MarsRover.create(initial_position)
+      boundaries = %Plateau{x: 2, y: 2}
+      {:ok, rover } = MarsRover.create(initial_position, boundaries)
       [rover: rover]
     end
 

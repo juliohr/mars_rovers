@@ -45,7 +45,7 @@ defmodule MarsRoverTest do
     {:ok, plateau} = Plateau.create(%{x: 2, y: 2})
     {:ok, rover } = MarsRover.create(initial_position, Plateau.boundaries(plateau))
     { :error, rover } = MarsRover.move(rover, Plateau.boundaries(plateau))
-    assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
+    assert rover == %MarsRover{ x: 0, y: 0, orientation: "W" }
   end
 
   describe "rover oriented towards north" do
@@ -62,17 +62,17 @@ defmodule MarsRoverTest do
 
     test "turns right", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "R")
-      assert rover == %Rover{ x: 0, y: 0, orientation: "E" }
+      assert rover == %MarsRover{ x: 0, y: 0, orientation: "E" }
     end
 
     test "turns left", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "L")
-      assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
+      assert rover == %MarsRover{ x: 0, y: 0, orientation: "W" }
     end
 
     test "moves forward", context do
       {:ok, rover } = MarsRover.move(context[:rover])
-      assert rover == %Rover{ x: 0, y: 1, orientation: "N" }
+      assert rover == %MarsRover{ x: 0, y: 1, orientation: "N" }
     end
   end
 
@@ -86,17 +86,17 @@ defmodule MarsRoverTest do
 
     test "turns right", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "R")
-      assert rover == %Rover{ x: 0, y: 0, orientation: "S" }
+      assert rover == %MarsRover{ x: 0, y: 0, orientation: "S" }
     end
 
     test "turns left", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "L")
-      assert rover == %Rover{ x: 0, y: 0, orientation: "N" }
+      assert rover == %MarsRover{ x: 0, y: 0, orientation: "N" }
     end
 
     test "moves forward", context do
       {:ok, rover } = MarsRover.move(context[:rover])
-      assert rover == %Rover{ x: 1, y: 0, orientation: "E" }
+      assert rover == %MarsRover{ x: 1, y: 0, orientation: "E" }
     end
   end
 
@@ -110,17 +110,17 @@ defmodule MarsRoverTest do
 
     test "turns right", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "R")
-      assert rover == %Rover{ x: 0, y: 1, orientation: "W" }
+      assert rover == %MarsRover{ x: 0, y: 1, orientation: "W" }
     end
 
     test "turns left", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "L")
-      assert rover == %Rover{ x: 0, y: 1, orientation: "E" }
+      assert rover == %MarsRover{ x: 0, y: 1, orientation: "E" }
     end
 
     test "moves forward", context do
       {:ok, rover } = MarsRover.move(context[:rover])
-      assert rover == %Rover{ x: 0, y: 0, orientation: "S" }
+      assert rover == %MarsRover{ x: 0, y: 0, orientation: "S" }
     end
   end
 
@@ -134,17 +134,17 @@ defmodule MarsRoverTest do
 
     test "turns right", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "R")
-      assert rover == %Rover{ x: 1, y: 0, orientation: "N" }
+      assert rover == %MarsRover{ x: 1, y: 0, orientation: "N" }
     end
 
     test "turns left", context do
       {:ok, rover } = MarsRover.turn(context[:rover], "L")
-      assert rover == %Rover{ x: 1, y: 0, orientation: "S" }
+      assert rover == %MarsRover{ x: 1, y: 0, orientation: "S" }
     end
 
     test "moves forward", context do
       {:ok, rover } = MarsRover.move(context[:rover])
-      assert rover == %Rover{ x: 0, y: 0, orientation: "W" }
+      assert rover == %MarsRover{ x: 0, y: 0, orientation: "W" }
     end
   end
 end

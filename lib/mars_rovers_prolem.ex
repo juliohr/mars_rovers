@@ -3,7 +3,7 @@ defmodule MarsRoversProblem do
     IO.puts "Reading input file"
     { :ok, body } = File.read("input.txt")
 
-    IO.puts "Creating Plateau"
+    IO.puts "Creating plateau"
     {:ok, plateau} = Plateau.create(parse_plateau_boundaries(body,0))
     boundaries = Plateau.boundaries(plateau)
 
@@ -12,11 +12,11 @@ defmodule MarsRoversProblem do
     {:ok, rover2 } = MarsRover.create(parse_initial_position(body, 3), boundaries)
 
     IO.puts "Executing instructions for rover 1"
-    command_rover1 = generate_command_rover_fn(rover1)
+    command_rover1 = generate_command_rover_fn(rover1, plateau)
     Enum.each(instructions_on_line(body, 2), fn instruction -> command_rover1.(instruction) end)
 
     IO.puts "Executing instructions for rover 2"
-    command_rover2 = generate_command_rover_fn(rover2)
+    command_rover2 = generate_command_rover_fn(rover2, plateau)
     Enum.each(instructions_on_line(body, 4), fn instruction -> command_rover2.(instruction) end)
 
     IO.puts "Writing output file to 'output.txt'"
@@ -43,8 +43,8 @@ defmodule MarsRoversProblem do
   and returns a function that execute instructions for 
   the given rover
   """
-  defp generate_command_rover_fn(rover) do
-    fn (instruction) -> MarsRoverParser.execute(rover, instruction) end
+  defp generate_command_rover_fn(rover, plateau) do
+    fn (instruction) -> MarsRoverParser.execute(rover, plateau, instruction) end
   end
 
   defp instructions_on_line(body, line) do

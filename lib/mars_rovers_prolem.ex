@@ -7,12 +7,17 @@ defmodule MarsRoversProblem do
     split_lines = String.split(body, "\n")
     initialize_plateau(Enum.at(split_lines, 0))
 
+    command_rover_fn = fn (rover) -> fn (instruction) -> MarsRoverParser.execute(rover, instruction) end end
+
     {:ok, rover1 } = MarsRover.create(Enum.at(split_lines,1))
     instructions_list_rover1 = String.codepoints(Enum.at(split,2))
-    Enum.each(instructions_list_rover1, fn instruction -> MarsRover.do(instruction))
+    command_rover1 = command_rover_fn(rover1)
+    Enum.each(instructions_list_rover1, fn instruction -> command_rover1(instruction))
 
     {:ok, rover2 } = MarsRover.create(Enum.at(split_lines,3))
     instructions_list_rover2 = String.codepoints(Enum.at(split,4))
-    Enum.each(instructions_list_rover2, fn instruction -> MarsRover.do(instruction))
+    command_rover2 = command_rover_fn(rover2)
+
+    Enum.each(instructions_list_rover2, fn instruction -> command_rover2(instruction))
   end
 end

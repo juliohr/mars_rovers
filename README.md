@@ -1,24 +1,53 @@
 # MarsRovers
 
-**TODO: Add description**
+#### Author: Julio Feijo
 
-## Installation
+### Solution
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+The solution has three modules:
 
-  1. Add `mars_rovers` to your list of dependencies in `mix.exs`:
+mars_rover -> responsible for the rover actions turn, move, knows its position
+plateau -> a 2d surface with boundaries on x and y
+mars_rover_parser -> reads commands from input file and translates to Rover actions
 
-    ```elixir
-    def deps do
-      [{:mars_rovers, "~> 0.1.0"}]
-    end
-    ```
+mars_rover_problem generates the program that does the following steps
 
-  2. Ensure `mars_rovers` is started before your application:
+* reads input file
+* creates plateau
+* creates rovers
+* executes instructions for rover 1
+* executes instructions for rover 2
+* writes output file
 
-    ```elixir
-    def application do
-      [applications: [:mars_rovers]]
-    end
-    ```
+### Installing Elixir
+
+You can skip this if you have Elixir installed on your machine.
+
+If you have homebrew run `$ brew install elixir`
+
+For more options refer to the [Elixir Installation guide](http://elixir-lang.org/install.html)
+
+### How to run
+
+On the root directory execute the following commands
+
+`mix deps.get`
+`mix escript.build`
+`mix ./mars_rovers`
+
+The answer is on the "output.txt" file on root directory
+
+
+### Tests
+
+Tests are under the directory tests and can be run with the command `mix test`
+
+you can run a specific test with `mix test test/my_test_path.exs`
+
+### Improvements
+
+* be able to specify input file path
+* handle more or less than two rovers (currently it is hard coded to handle only two)
+* accept turns different from 90 degrees
+* refactor MarsRover.move/2
 

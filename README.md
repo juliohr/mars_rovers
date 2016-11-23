@@ -7,7 +7,9 @@
 The solution has three modules:
 
 mars_rover -> responsible for the rover actions turn, move, knows its position.
+
 plateau -> a 2d surface with boundaries on x and y.
+
 mars_rover_parser -> reads commands from input file and translates to Rover actions.
 
 mars_rover_problem generates the program that does the following steps

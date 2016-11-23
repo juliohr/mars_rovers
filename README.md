@@ -6,9 +6,9 @@
 
 The solution has three modules:
 
-mars_rover -> responsible for the rover actions turn, move, knows its position
-plateau -> a 2d surface with boundaries on x and y
-mars_rover_parser -> reads commands from input file and translates to Rover actions
+mars_rover -> responsible for the rover actions turn, move, knows its position.
+plateau -> a 2d surface with boundaries on x and y.
+mars_rover_parser -> reads commands from input file and translates to Rover actions.
 
 mars_rover_problem generates the program that does the following steps
 
@@ -32,7 +32,9 @@ For more options refer to the [Elixir Installation guide](http://elixir-lang.org
 On the root directory execute the following commands
 
 `mix deps.get`
+
 `mix escript.build`
+
 `mix ./mars_rovers`
 
 The answer is on the "output.txt" file on root directory

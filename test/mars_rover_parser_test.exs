@@ -1,6 +1,8 @@
 defmodule MarsRoverParserTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   doctest MarsRover
+
+  import Mock
 
   @rover_position %{x: 0, y: 0, orientation: "N"}
   @plateau_boundaries %{x: 2, y: 2}
@@ -12,18 +14,27 @@ defmodule MarsRoverParserTest do
   end
 
   test "executes a turn right command", context do
-    assert :ok = MarsRoverParser.execute(context[:rover], context[:plateau], "R")
-    assert MarsRover.current_position(context[:rover]) == %{ x: 0, y: 0, orientation: "E" }
+    with_mock MarsRover, [turn: fn(_rover, _command) -> :ok end] do
+      assert :ok = MarsRoverParser.execute(context[:rover], context[:plateau], "R")
+      assert called MarsRover.turn(context[:rover], "R")
+    end
   end
 
   test "executes a turn left command", context do
-    assert :ok = MarsRoverParser.execute(context[:rover], context[:plateau], "L")
-    assert MarsRover.current_position(context[:rover]) == %{ x: 0, y: 0, orientation: "W" }
+    with_mock MarsRover, [turn: fn(_rover, _command) -> :ok end] do
+      assert :ok = MarsRoverParser.execute(context[:rover], context[:plateau], "L")
+      assert called MarsRover.turn(context[:rover], "L")
+    end
   end
 
   test "executes a move command", context do
-    assert :ok = MarsRoverParser.execute(context[:rover], context[:plateau], "M")
-    assert MarsRover.current_position(context[:rover]) == %{ x: 0, y: 1, orientation: "N" }
+    with_mocks([
+      {MarsRover,[],[move: fn(_rover, _boundaries) -> :ok end ]},
+      {Plateau, [], [boundaries: fn(_plateau) -> @plateau_boundaries end ]}]) do
+
+      assert :ok = MarsRoverParser.execute(context[:rover], context[:plateau], "M")
+      assert called MarsRover.move(context[:rover], @plateau_boundaries)
+    end
   end
 
   test "show an error when invalid command", context do
